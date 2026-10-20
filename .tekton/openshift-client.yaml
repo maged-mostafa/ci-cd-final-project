@@ -1,0 +1,14 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: openshift-client
+spec:
+  steps:
+    - name: check-project
+      image: quay.io/openshift/origin-cli:4.18
+      script: |
+        #!/bin/sh
+        set -eu
+        echo "Checking OpenShift project..."
+        oc project
+        oc get deployments

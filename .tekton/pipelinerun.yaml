@@ -1,0 +1,18 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  generateName: ci-cd-pipeline-run-
+spec:
+  pipelineRef:
+    name: ci-cd-pipeline
+
+  params:
+    - name: repo-url
+      value: https://github.com/maged-mostafa/ci-cd-final-project/
+    - name: revision
+      value: main
+
+  workspaces:
+    - name: shared-workspace
+      persistentVolumeClaim:
+        claimName: oc-lab-pvc

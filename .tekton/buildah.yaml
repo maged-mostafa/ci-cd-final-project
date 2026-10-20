@@ -1,0 +1,27 @@
+apiVersion: tekton.dev/v1
+kind: Task
+metadata:
+  name: buildah
+spec:
+  params:
+    - name: IMAGE
+      type: string
+      default: localhost/ci-cd-final-project:latest
+
+  workspaces:
+    - name: source
+
+  steps:
+    - name: build
+      image: quay.io/buildah/stable:latest
+      workingDir: $(workspaces.source.path)
+      securityContext:
+        capabilities:
+          add:
+            - SETFCAP
+      script: |
+        #!/bin/sh
+        set -eu
+        buildah bud --storage-driver=vfs \
+          --format=docker \
+          -t "$(params.IMAGE)" .
